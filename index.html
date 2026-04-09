@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Neuronas en Acción</title>
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --card: #ffffff;
+      --text: #24324a;
+      --muted: #5f6f86;
+      --primary: #2c5aa0;
+      --success: #2e8b57;
+      --danger: #b54343;
+      --warning: #c78719;
+      --border: #dbe3ef;
+      --shadow: 0 12px 30px rgba(33, 56, 93, 0.12);
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(180deg, #eef3fb 0%, #f9fbff 100%);
+      color: var(--text);
+    }
+
+    .wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    .hero {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      padding: 26px;
+      margin-bottom: 20px;
+    }
+
+    h1, h2, h3, p { margin-top: 0; }
+
+    h1 {
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+      color: var(--primary);
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      font-size: 1.05rem;
+      color: var(--muted);
+      max-width: 850px;
+      line-height: 1.7;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 20px;
+      align-items: start;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 20px;
+    }
+
+    .controls {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .control-block label {
+      display: block;
+      font-size: 0.95rem;
+      margin-bottom: 6px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    select, button {
+      width: 100%;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      padding: 12px 14px;
+      font-size: 1rem;
+      font-family: inherit;
+    }
+
+    button {
+      background: var(--primary);
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: 700;
+      transition: transform 0.12s ease, opacity 0.2s ease;
+    }
+
+    button:hover { transform: translateY(-1px); }
+    button.secondary { background: #6c7d96; }
+    button.warning { background: var(--warning); }
+    button.success { background: var(--success); }
+
+    .button-row {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .stimulus-box {
+      border: 2px dashed var(--border);
+      border-radius: 18px;
+      padding: 18px;
+      text-align: center;
+      min-height: 230px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      background: #fbfdff;
+    }
+
+    .signal {
+      width: 120px;
+      height: 120px;
+      border-radius: 24px;
+      border: 6px solid rgba(255,255,255,0.7);
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,0.06);
+    }
+
+    .signal.red { background: #e84f4f; }
+    .signal.blue { background: #4285f4; }
+    .signal.green { background: #3cb371; }
+    .signal.yellow { background: #f2c94c; }
+
+    .stimulus-text {
+      font-size: 1.25rem;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .small-text {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .action-btn {
+      min-height: 68px;
+      font-size: 1rem;
+      font-weight: 700;
+      background: #eef4ff;
+      color: var(--text);
+      border: 1px solid #cfdbf1;
+    }
+
+    .action-btn:hover {
+      background: #e4eefc;
+    }
+
+    .status {
+      margin-top: 16px;
+      padding: 14px;
+      border-radius: 14px;
+      background: #f6f9ff;
+      border: 1px solid var(--border);
+      min-height: 72px;
+      line-height: 1.6;
+    }
+
+    .status.ok {
+      background: #effaf3;
+      border-color: #cde9d7;
+      color: #215f3d;
+    }
+
+    .status.fail {
+      background: #fff2f2;
+      border-color: #eccaca;
+      color: #8d3131;
+    }
+
+    .status.noise {
+      background: #fff9ef;
+      border-color: #ead9ae;
+      color: #8a6114;
+    }
+
+    .scoreboard {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .metric {
+      background: #f8fbff;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      text-align: center;
+    }
+
+    .metric .value {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--primary);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .brain-track {
+      display: grid;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .brain-node {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px 14px;
+      background: #fbfdff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      transition: all 0.25s ease;
+    }
+
+    .brain-node.active {
+      background: #edf4ff;
+      border-color: #bcd0f0;
+      transform: translateX(4px);
+    }
+
+    .brain-node.noise {
+      background: #fff8ea;
+      border-color: #ecd18d;
+    }
+
+    .brain-node.correct {
+      background: #edf9f1;
+      border-color: #c8e6d2;
+    }
+
+    .brain-node .node-name {
+      font-weight: 700;
+    }
+
+    .noise-bar {
+      margin-top: 14px;
+      background: #edf2fa;
+      border-radius: 999px;
+      height: 16px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .noise-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #67b26f 0%, #f2c94c 60%, #e76f51 100%);
+      transition: width 0.35s ease;
+    }
+
+    .legend {
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.7;
+    }
+
+    .footer-note {
+      margin-top: 18px;
+      font-size: 0.92rem;
+      color: var(--muted);
+    }
+
+    .pill {
+      display: inline-block;
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: #eef4ff;
+      color: var(--primary);
+      font-weight: 700;
+      font-size: 0.88rem;
+      margin-right: 6px;
+      margin-bottom: 6px;
+    }
+
+    @media (max-width: 860px) {
+      .grid { grid-template-columns: 1fr; }
+      .controls, .button-row, .actions, .scoreboard { grid-template-columns: 1fr; }
+      .signal { width: 96px; height: 96px; }
+      .wrap { padding: 14px; }
+      .hero, .card { padding: 16px; }
+      iframe { max-width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <h1>🎮🧠 Neuronas en Acción</h1>
+      <p class="subtitle">
+        Un juego interactivo para web o pizarra digital inspirado en la noticia sobre neuronas humanas conectadas a un chip. Aquí el alumnado debe responder a estímulos, reducir el ruido y mejorar su aprendizaje ronda a ronda, igual que una red neuronal que se adapta con la experiencia.
+      </p>
+      <div>
+        <span class="pill">Ciencia</span>
+        <span class="pill">Neuroeducación</span>
+        <span class="pill">Gamificación</span>
+        <span class="pill">Radio escolar</span>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="card">
+        <h2>⚙️ Panel de juego</h2>
+
+        <div class="controls">
+          <div class="control-block">
+            <label for="mode">Modo</label>
+            <select id="mode">
+              <option value="colors">Estímulos por color</option>
+              <option value="audio">Estímulos por sonido/palabra</option>
+              <option value="mixed">Modo mixto</option>
+            </select>
+          </div>
+
+          <div class="control-block">
+            <label for="difficulty">Dificultad</label>
+            <select id="difficulty">
+              <option value="easy">Baja</option>
+              <option value="medium" selected>Media</option>
+              <option value="hard">Alta</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="button-row">
+          <button id="startBtn" class="success">▶️ Empezar partida</button>
+          <button id="nextBtn">➡️ Nuevo estímulo</button>
+          <button id="resetBtn" class="secondary">🔄 Reiniciar</button>
+        </div>
+
+        <div class="stimulus-box" id="stimulusBox">
+          <div class="signal blue" id="signalShape"></div>
+          <div class="stimulus-text" id="stimulusText">Pulsa “Empezar partida”</div>
+          <div class="small-text" id="instructionText">Observa el estímulo y responde con la acción correcta.</div>
+        </div>
+
+        <div class="actions">
+          <button class="action-btn" data-action="saltar">🦘 Saltar</button>
+          <button class="action-btn" data-action="agacharse">🧎 Agacharse</button>
+          <button class="action-btn" data-action="girar">🔄 Girar</button>
+          <button class="action-btn" data-action="aplaudir">👏 Aplaudir</button>
+        </div>
+
+        <div class="status" id="statusBox">
+          Esperando inicio. El juego te mostrará un estímulo y tendrás que responder como si fueras una neurona aprendiendo a interpretar señales.
+        </div>
+
+        <div class="scoreboard">
+          <div class="metric">
+            <div class="value" id="scoreValue">0</div>
+            <div>Aciertos</div>
+          </div>
+          <div class="metric">
+            <div class="value" id="roundValue">0</div>
+            <div>Rondas</div>
+          </div>
+          <div class="metric">
+            <div class="value" id="streakValue">0</div>
+            <div>Racha</div>
+          </div>
+          <div class="metric">
+            <div class="value" id="learningValue">0%</div>
+            <div>Aprendizaje</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>🧠 Red neuronal simulada</h2>
+        <p class="small-text">
+          Cuanto más aciertas, más ordenada se vuelve la red. Si fallas, aumenta el ruido. Esa es la metáfora central del experimento.
+        </p>
+
+        <div class="brain-track" id="brainTrack">
+          <div class="brain-node" id="node1"><span class="node-name">1. Sensor</span><span>Entrada</span></div>
+          <div class="brain-node" id="node2"><span class="node-name">2. Neurona A</span><span>Procesa</span></div>
+          <div class="brain-node" id="node3"><span class="node-name">3. Neurona B</span><span>Transmite</span></div>
+          <div class="brain-node" id="node4"><span class="node-name">4. Respuesta</span><span>Salida</span></div>
+        </div>
+
+        <h3 style="margin-top: 20px;">📶 Nivel de ruido</h3>
+        <div class="noise-bar" aria-hidden="true">
+          <div class="noise-fill" id="noiseFill"></div>
+        </div>
+        <p class="small-text" id="noiseText">Ruido actual: bajo</p>
+
+        <div class="legend">
+          <strong>Reglas base:</strong><br>
+          🔴 Rojo → Saltar<br>
+          🔵 Azul → Agacharse<br>
+          🟢 Verde → Girar<br>
+          🟡 Amarillo → Aplaudir
+        </div>
+
+        <div class="footer-note">
+          Sugerencia didáctica: proyecta este juego en la pizarra digital y pide al alumnado que justifique por qué ha elegido una respuesta. También puedes usarlo como introducción a un debate sobre inteligencia, aprendizaje y bioética.
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const mappings = {
+      colors: [
+        { key: 'red', label: '🔴 Señal roja', action: 'saltar', help: 'Una neurona bien entrenada asocia rojo con saltar.' },
+        { key: 'blue', label: '🔵 Señal azul', action: 'agacharse', help: 'Azul se interpreta como agacharse.' },
+        { key: 'green', label: '🟢 Señal verde', action: 'girar', help: 'Verde activa el giro.' },
+        { key: 'yellow', label: '🟡 Señal amarilla', action: 'aplaudir', help: 'Amarillo indica aplauso.' }
+      ],
+      audio: [
+        { key: 'blue', label: '🔊 “Eco”', action: 'agacharse', help: 'El sonido “Eco” indica agacharse.' },
+        { key: 'green', label: '🔊 “Spin”', action: 'girar', help: 'La palabra “Spin” se asocia a girar.' },
+        { key: 'red', label: '🔊 “Jump”', action: 'saltar', help: 'La palabra “Jump” activa el salto.' },
+        { key: 'yellow', label: '🔊 “Clap”', action: 'aplaudir', help: 'La palabra “Clap” pide aplaudir.' }
+      ],
+      mixed: [
+        { key: 'red', label: '🔴 + “Jump”', action: 'saltar', help: 'Color y palabra coinciden: saltar.' },
+        { key: 'blue', label: '🔵 + “Eco”', action: 'agacharse', help: 'Azul y Eco llevan a agacharse.' },
+        { key: 'green', label: '🟢 + “Spin”', action: 'girar', help: 'Señal mixta correcta: girar.' },
+        { key: 'yellow', label: '🟡 + “Clap”', action: 'aplaudir', help: 'Señal mixta correcta: aplaudir.' }
+      ]
+    };
+
+    const startBtn = document.getElementById('startBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const modeSelect = document.getElementById('mode');
+    const difficultySelect = document.getElementById('difficulty');
+
+    const stimulusText = document.getElementById('stimulusText');
+    const instructionText = document.getElementById('instructionText');
+    const signalShape = document.getElementById('signalShape');
+    const statusBox = document.getElementById('statusBox');
+
+    const scoreValue = document.getElementById('scoreValue');
+    const roundValue = document.getElementById('roundValue');
+    const streakValue = document.getElementById('streakValue');
+    const learningValue = document.getElementById('learningValue');
+    const noiseFill = document.getElementById('noiseFill');
+    const noiseText = document.getElementById('noiseText');
+
+    const nodes = [
+      document.getElementById('node1'),
+      document.getElementById('node2'),
+      document.getElementById('node3'),
+      document.getElementById('node4')
+    ];
+
+    const actionButtons = [...document.querySelectorAll('.action-btn')];
+
+    let state = {
+      started: false,
+      current: null,
+      score: 0,
+      rounds: 0,
+      streak: 0,
+      noise: 35,
+      answered: false
+    };
+
+    function getPool() {
+      return mappings[modeSelect.value];
+    }
+
+    function getDifficultySettings() {
+      const value = difficultySelect.value;
+      if (value === 'easy') return { noisePenalty: 8, noiseReward: 10, label: 'baja' };
+      if (value === 'hard') return { noisePenalty: 18, noiseReward: 6, label: 'alta' };
+      return { noisePenalty: 12, noiseReward: 8, label: 'media' };
+    }
+
+    function updateBoard() {
+      scoreValue.textContent = state.score;
+      roundValue.textContent = state.rounds;
+      streakValue.textContent = state.streak;
+      const learning = state.rounds === 0 ? 0 : Math.round((state.score / state.rounds) * 100);
+      learningValue.textContent = `${learning}%`;
+      noiseFill.style.width = `${state.noise}%`;
+
+      let label = 'bajo';
+      if (state.noise > 66) label = 'alto';
+      else if (state.noise > 33) label = 'medio';
+      noiseText.textContent = `Ruido actual: ${label}`;
+    }
+
+    function clearNodes() {
+      nodes.forEach(n => n.className = 'brain-node');
+    }
+
+    function animateNodes(resultType = 'active') {
+      clearNodes();
+      nodes.forEach((node, index) => {
+        setTimeout(() => {
+          node.classList.add(index < 3 ? 'active' : resultType);
+          if (index === 3 && resultType === 'active') node.classList.add('active');
+        }, index * 180);
+      });
+    }
+
+    function setStatus(message, type = '') {
+      statusBox.className = 'status';
+      if (type) statusBox.classList.add(type);
+      statusBox.innerHTML = message;
+    }
+
+    function randomStimulus() {
+      const pool = getPool();
+      return pool[Math.floor(Math.random() * pool.length)];
+    }
+
+    function nextStimulus() {
+      if (!state.started) {
+        setStatus('Primero pulsa <strong>“Empezar partida”</strong>.', 'noise');
+        return;
+      }
+
+      state.current = randomStimulus();
+      state.answered = false;
+      stimulusText.textContent = state.current.label;
+      instructionText.textContent = '¿Qué acción corresponde a esta señal?';
+      signalShape.className = `signal ${state.current.key}`;
+      clearNodes();
+      animateNodes('active');
+      setStatus('Señal recibida. La red neuronal está procesando el estímulo...', 'noise');
+    }
+
+    function handleAnswer(action) {
+      if (!state.started || !state.current) {
+        setStatus('Todavía no hay ningún estímulo activo.', 'noise');
+        return;
+      }
+
+      if (state.answered) {
+        setStatus('Ya has respondido a esta ronda. Pulsa <strong>“Nuevo estímulo”</strong>.', 'noise');
+        return;
+      }
+
+      const difficulty = getDifficultySettings();
+      state.rounds += 1;
+      state.answered = true;
+
+      if (action === state.current.action) {
+        state.score += 1;
+        state.streak += 1;
+        state.noise = Math.max(0, state.noise - difficulty.noiseReward - Math.min(10, state.streak));
+        clearNodes();
+        nodes.forEach((node, index) => setTimeout(() => node.classList.add(index < 3 ? 'active' : 'correct'), index * 150));
+        setStatus(`✅ <strong>Respuesta correcta:</strong> <em>${capitalize(action)}</em>. La red ha aprendido mejor y el ruido disminuye.`, 'ok');
+      } else {
+        state.streak = 0;
+        state.noise = Math.min(100, state.noise + difficulty.noisePenalty);
+        clearNodes();
+        nodes.forEach((node, index) => setTimeout(() => node.classList.add(index < 3 ? 'active' : 'noise'), index * 150));
+        setStatus(`❌ <strong>Respuesta incorrecta:</strong> elegiste <em>${capitalize(action)}</em>, pero la señal correcta era <em>${capitalize(state.current.action)}</em>. El ruido aumenta y la red necesita reajustarse.`, 'fail');
+      }
+
+      updateBoard();
+
+      const learning = state.rounds === 0 ? 0 : Math.round((state.score / state.rounds) * 100);
+      if (learning >= 80 && state.rounds >= 5) {
+        instructionText.textContent = '¡La red está muy entrenada!';
+      } else if (learning >= 50) {
+        instructionText.textContent = 'La red mejora con cada intento.';
+      } else {
+        instructionText.textContent = 'La red aún necesita práctica.';
+      }
+    }
+
+    function capitalize(text) {
+      return text.charAt(0).toUpperCase() + text.slice(1);
+    }
+
+    function resetGame() {
+      state = {
+        started: false,
+        current: null,
+        score: 0,
+        rounds: 0,
+        streak: 0,
+        noise: 35,
+        answered: false
+      };
+      stimulusText.textContent = 'Pulsa “Empezar partida”';
+      instructionText.textContent = 'Observa el estímulo y responde con la acción correcta.';
+      signalShape.className = 'signal blue';
+      clearNodes();
+      updateBoard();
+      setStatus('Juego reiniciado. Puedes cambiar el modo o la dificultad antes de empezar.', '');
+    }
+
+    startBtn.addEventListener('click', () => {
+      state.started = true;
+      state.current = null;
+      setStatus(`Partida iniciada en modo <strong>${modeSelect.options[modeSelect.selectedIndex].text}</strong> y dificultad <strong>${getDifficultySettings().label}</strong>.`, 'ok');
+      nextStimulus();
+    });
+
+    nextBtn.addEventListener('click', nextStimulus);
+    resetBtn.addEventListener('click', resetGame);
+    actionButtons.forEach(btn => btn.addEventListener('click', () => handleAnswer(btn.dataset.action)));
+
+    modeSelect.addEventListener('change', () => {
+      if (!state.started) return;
+      setStatus('Has cambiado el modo. Pulsa “Nuevo estímulo” para continuar con las nuevas reglas.', 'noise');
+    });
+
+    difficultySelect.addEventListener('change', () => {
+      if (!state.started) return;
+      setStatus('Dificultad actualizada. El nivel de ruido reaccionará de forma distinta a tus respuestas.', 'noise');
+    });
+
+    updateBoard();
+  </script>
+</body>
+</html>
