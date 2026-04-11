@@ -1,1 +1,624 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Conoce el Parkinson – Día Mundial 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --tulip: #e8344a;
+    --tulip-light: #f26c7e;
+    --cream: #fdf6ee;
+    --ink: #1a1218;
+    --moss: #2d5a3d;
+    --gold: #c9954a;
+    --gray: #6b5e6a;
+    --card-bg: #fff8f2;
+  }
 
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--ink);
+    color: var(--cream);
+    padding: 2.5rem 2rem 2rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 20% 50%, #3d1020 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 50%, #1a2e22 0%, transparent 60%);
+  }
+  .tulip-icon { font-size: 3rem; animation: sway 3s ease-in-out infinite; display:inline-block; }
+  @keyframes sway { 0%,100%{transform:rotate(-5deg)} 50%{transform:rotate(5deg)} }
+
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.6rem, 5vw, 2.8rem);
+    font-weight: 900;
+    position: relative;
+    z-index:1;
+    margin-top: 0.5rem;
+    line-height: 1.2;
+  }
+  header p {
+    font-size: 0.9rem;
+    opacity: 0.7;
+    position: relative;
+    z-index:1;
+    margin-top: 0.5rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .badge {
+    display: inline-block;
+    background: var(--tulip);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.9rem;
+    border-radius: 2rem;
+    margin-bottom: 1rem;
+    position: relative; z-index:1;
+  }
+
+  /* ── NAV TABS ── */
+  .tabs {
+    display: flex;
+    overflow-x: auto;
+    background: var(--ink);
+    border-top: 1px solid #333;
+    gap: 0;
+    scrollbar-width: none;
+  }
+  .tabs::-webkit-scrollbar { display:none; }
+  .tab {
+    flex-shrink: 0;
+    padding: 0.85rem 1.2rem;
+    cursor: pointer;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: #a09aa8;
+    border-bottom: 3px solid transparent;
+    transition: all 0.25s;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+  .tab.active, .tab:hover {
+    color: var(--cream);
+    border-bottom-color: var(--tulip);
+  }
+  .tab.active { color: #fff; }
+
+  /* ── SECTIONS ── */
+  .section { display:none; padding: 1.5rem 1rem 4rem; max-width: 700px; margin: 0 auto; }
+  .section.active { display:block; }
+
+  /* ── CARDS ── */
+  .card {
+    background: var(--card-bg);
+    border: 1px solid #ede0d8;
+    border-radius: 12px;
+    padding: 1.3rem 1.4rem;
+    margin-bottom: 1rem;
+    position: relative;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.08); }
+  .card-tag {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.7rem;
+    border-radius: 2rem;
+    margin-bottom: 0.7rem;
+  }
+  .card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+  }
+  .card p { font-size: 0.9rem; line-height: 1.6; color: #4a3f48; }
+
+  /* ── QUIZ ── */
+  #quiz-container { }
+  .progress-bar-wrap {
+    background: #e8ddd6;
+    border-radius: 2rem;
+    height: 6px;
+    margin-bottom: 1.5rem;
+    overflow:hidden;
+  }
+  .progress-bar {
+    height: 100%;
+    background: var(--tulip);
+    border-radius: 2rem;
+    transition: width 0.4s ease;
+  }
+  .quiz-q {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 1.2rem;
+    line-height: 1.4;
+  }
+  .quiz-opts { display: flex; flex-direction: column; gap: 0.7rem; }
+  .quiz-opt {
+    background: #fff;
+    border: 2px solid #e0d4cc;
+    border-radius: 10px;
+    padding: 0.85rem 1rem;
+    cursor: pointer;
+    font-size: 0.92rem;
+    transition: all 0.2s;
+    text-align: left;
+  }
+  .quiz-opt:hover:not(:disabled) { border-color: var(--tulip); background: #fff0f2; }
+  .quiz-opt.correct { border-color: var(--moss); background: #eef6f0; color: var(--moss); font-weight:500; }
+  .quiz-opt.wrong { border-color: #c0392b; background: #fdf0f0; color: #c0392b; }
+  .quiz-opt:disabled { cursor: default; }
+
+  .quiz-feedback {
+    margin-top: 1rem;
+    padding: 1rem 1.1rem;
+    border-radius: 10px;
+    font-size: 0.88rem;
+    line-height: 1.6;
+    display: none;
+  }
+  .quiz-feedback.show { display: block; }
+  .quiz-feedback.ok { background: #eef6f0; border-left: 3px solid var(--moss); color: var(--moss); }
+  .quiz-feedback.no { background: #fdf0f0; border-left: 3px solid #c0392b; color: #7a1a1a; }
+
+  .btn {
+    display: inline-block;
+    margin-top: 1.2rem;
+    background: var(--tulip);
+    color: #fff;
+    border: none;
+    padding: 0.8rem 1.8rem;
+    border-radius: 8px;
+    font-size: 0.92rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .btn:hover { background: #c82036; transform: translateY(-1px); }
+  .btn-ghost {
+    background: transparent;
+    border: 2px solid var(--tulip);
+    color: var(--tulip);
+  }
+  .btn-ghost:hover { background: #fff0f2; }
+
+  .score-box {
+    text-align: center;
+    padding: 2rem;
+    background: var(--ink);
+    color: var(--cream);
+    border-radius: 14px;
+  }
+  .score-box .big { font-family: 'Playfair Display', serif; font-size: 3.5rem; color: var(--tulip); }
+  .score-box p { font-size: 0.9rem; opacity: 0.75; margin-top: 0.4rem; }
+
+  /* ── MITOS ── */
+  .mito-card {
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+    border: 1px solid #ede0d8;
+    cursor: pointer;
+  }
+  .mito-header {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 1rem 1.2rem;
+    background: var(--card-bg);
+    font-weight: 500;
+    font-size: 0.93rem;
+  }
+  .mito-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+  }
+  .mito-label.mito { background: #ffeaea; color: #c0392b; }
+  .mito-label.fact { background: #eef6f0; color: var(--moss); }
+  .mito-reveal {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, padding 0.3s;
+    background: #fff;
+    padding: 0 1.2rem;
+    font-size: 0.88rem;
+    line-height: 1.65;
+    color: #4a3f48;
+  }
+  .mito-reveal.open { max-height: 200px; padding: 1rem 1.2rem; }
+  .chevron { margin-left: auto; transition: transform 0.3s; font-size:0.8rem; }
+  .mito-card.open .chevron { transform: rotate(180deg); }
+
+  /* ── SÍNTOMAS ── */
+  .symptom-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+  .sym-card {
+    border-radius: 12px;
+    padding: 1rem;
+    text-align: center;
+    font-size: 0.82rem;
+    cursor: pointer;
+    transition: transform 0.2s;
+    user-select: none;
+  }
+  .sym-card:hover { transform: scale(1.04); }
+  .sym-icon { font-size: 2rem; display: block; margin-bottom: 0.4rem; }
+  .sym-detail {
+    display: none;
+    margin-top: 1rem;
+    padding: 1rem 1.2rem;
+    background: #fff;
+    border: 1px solid #ede0d8;
+    border-radius: 10px;
+    font-size: 0.88rem;
+    line-height: 1.6;
+    color: #4a3f48;
+    animation: fadeIn 0.3s;
+  }
+  .sym-detail.show { display: block; }
+  .sym-detail h4 { font-family: 'Playfair Display', serif; margin-bottom: 0.4rem; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(4px)} to{opacity:1;transform:translateY(0)} }
+
+  /* ── TIMELINE ── */
+  .timeline { position: relative; padding-left: 2rem; }
+  .timeline::before {
+    content:'';
+    position:absolute; left:0.5rem; top:0; bottom:0;
+    width: 2px; background: linear-gradient(to bottom, var(--tulip), var(--moss));
+  }
+  .tl-item {
+    position: relative;
+    margin-bottom: 1.5rem;
+    animation: fadeIn 0.5s ease both;
+  }
+  .tl-dot {
+    position: absolute; left: -1.65rem; top: 0.25rem;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--tulip);
+    border: 2px solid var(--cream);
+    box-shadow: 0 0 0 2px var(--tulip);
+  }
+  .tl-year {
+    font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.1em; color: var(--gold); margin-bottom: 0.2rem;
+  }
+  .tl-text { font-size: 0.88rem; line-height: 1.6; color: #4a3f48; }
+  .tl-text strong { color: var(--ink); }
+
+  /* FOOTER inside section */
+  .section-footer {
+    margin-top: 2rem;
+    padding: 1.2rem;
+    background: var(--ink);
+    border-radius: 12px;
+    color: var(--cream);
+    font-size: 0.82rem;
+    line-height: 1.6;
+    opacity: 0.9;
+  }
+  .section-footer a { color: var(--tulip-light); }
+
+  /* scroll reveal */
+  .reveal { opacity:0; transform:translateY(16px); transition: opacity 0.5s, transform 0.5s; }
+  .reveal.visible { opacity:1; transform:none; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="badge">🌷 11 de Abril · Día Mundial del Parkinson 2026</div>
+  <div class="tulip-icon">🌷</div>
+  <h1>Conoce el Parkinson</h1>
+  <p>Aprende · Reflexiona · Actúa</p>
+</header>
+
+<nav class="tabs">
+  <div class="tab active" onclick="showSection('inicio')">🏠 Inicio</div>
+  <div class="tab" onclick="showSection('sintomas')">🧠 Síntomas</div>
+  <div class="tab" onclick="showSection('mitos')">⚡ Mitos</div>
+  <div class="tab" onclick="showSection('quiz')">🎯 Quiz</div>
+  <div class="tab" onclick="showSection('historia')">📜 Historia</div>
+</nav>
+
+<!-- ═══════════ INICIO ═══════════ -->
+<div id="inicio" class="section active">
+  <div class="card reveal" style="background:var(--ink);color:var(--cream);border-color:transparent">
+    <div class="card-tag" style="background:var(--tulip);color:#fff">Lema 2026</div>
+    <h3 style="color:#fff;font-size:1.25rem">"Generar puentes en la brecha de cuidados"</h3>
+    <p style="color:#c9b8c8;margin-top:0.4rem">La campaña global de este año busca reducir la distancia entre las necesidades reales de los pacientes y el apoyo que reciben los sistemas sanitarios y sociales.</p>
+  </div>
+
+  <div class="card reveal">
+    <div class="card-tag" style="background:#ffeaea;color:#c0392b">¿Qué es?</div>
+    <h3>Enfermedad neurodegenerativa crónica</h3>
+    <p>El Parkinson afecta al sistema nervioso central. Su causa principal es la <strong>muerte progresiva de neuronas</strong> que producen <strong>dopamina</strong> en una región del cerebro llamada sustancia negra, lo que altera el control del movimiento.</p>
+  </div>
+
+  <div class="card reveal">
+    <div class="card-tag" style="background:#eef6f0;color:#2d5a3d">Cifras clave</div>
+    <h3>El Parkinson en el mundo</h3>
+    <p>
+      🌍 <strong>+6,5 millones</strong> de personas lo padecen hoy<br>
+      📈 Se proyectan <strong>+25 millones</strong> para 2050 (+112%)<br>
+      🇪🇸 Entre <strong>150.000 y 200.000</strong> personas en España<br>
+      👤 Afecta a <strong>1 de cada 100</strong> mayores de 60 años<br>
+      😔 Entre el <strong>20-40%</strong> de pacientes presenta depresión como síntoma precoz
+    </p>
+  </div>
+
+  <div class="card reveal">
+    <div class="card-tag" style="background:#fff3e0;color:#c9954a">Símbolo</div>
+    <h3>🌷 El tulipán rojo</h3>
+    <p>El tulipán rojo es el símbolo internacional del Parkinson. Representa <strong>esperanza, fuerza y solidaridad</strong> entre pacientes, cuidadores y familias.</p>
+  </div>
+
+  <div class="section-footer">
+    💡 <strong>Navega por las secciones</strong> para aprender sobre síntomas, derribar mitos, poner a prueba tu conocimiento y conocer la historia de esta enfermedad.
+  </div>
+</div>
+
+<!-- ═══════════ SÍNTOMAS ═══════════ -->
+<div id="sintomas" class="section">
+  <p style="font-size:0.88rem;color:var(--gray);margin-bottom:1.2rem">Toca cada síntoma para aprender más 👇</p>
+
+  <div class="symptom-grid" id="sym-grid">
+    <div class="sym-card" style="background:#fdf0f0" onclick="showSym('temblor')">
+      <span class="sym-icon">🤲</span>
+      <strong>Temblor</strong><br>en reposo
+    </div>
+    <div class="sym-card" style="background:#fdf6e0" onclick="showSym('rigidez')">
+      <span class="sym-icon">🦾</span>
+      <strong>Rigidez</strong><br>muscular
+    </div>
+    <div class="sym-card" style="background:#f0f4ff" onclick="showSym('brady')">
+      <span class="sym-icon">🐢</span>
+      <strong>Bradicinesia</strong><br>lentitud
+    </div>
+    <div class="sym-card" style="background:#f0fdf4" onclick="showSym('equilibrio')">
+      <span class="sym-icon">⚖️</span>
+      <strong>Equilibrio</strong><br>alterado
+    </div>
+    <div class="sym-card" style="background:#fdf0ff" onclick="showSym('cognitivo')">
+      <span class="sym-icon">🧩</span>
+      <strong>Cognitivos</strong><br>no motores
+    </div>
+    <div class="sym-card" style="background:#fff0f5" onclick="showSym('animo')">
+      <span class="sym-icon">💬</span>
+      <strong>Estado</strong><br>de ánimo
+    </div>
+    <div class="sym-card" style="background:#f0fbff" onclick="showSym('sueno')">
+      <span class="sym-icon">😴</span>
+      <strong>Sueño</strong><br>alterado
+    </div>
+    <div class="sym-card" style="background:#fffaf0" onclick="showSym('expresion')">
+      <span class="sym-icon">😶</span>
+      <strong>Expresión</strong><br>facial
+    </div>
+  </div>
+
+  <div id="sym-detail" class="sym-detail"></div>
+
+  <div class="card" style="margin-top:1.2rem;border-left:3px solid var(--gold)">
+    <p>⚠️ <strong>¡Importante!</strong> Hasta un <strong>25% de los pacientes nunca tiemblan</strong>. Los síntomas no motores (cognitivos, emocionales, del sueño) pueden aparecer <em>antes</em> que los físicos y ser igual o más incapacitantes.</p>
+  </div>
+</div>
+
+<!-- ═══════════ MITOS ═══════════ -->
+<div id="mitos" class="section">
+  <p style="font-size:0.88rem;color:var(--gray);margin-bottom:1.2rem">Toca cada tarjeta para revelar la verdad 👇</p>
+
+  <div id="mitos-list"></div>
+</div>
+
+<!-- ═══════════ QUIZ ═══════════ -->
+<div id="quiz" class="section">
+  <div id="quiz-container"></div>
+</div>
+
+<!-- ═══════════ HISTORIA ═══════════ -->
+<div id="historia" class="section">
+  <div class="card" style="margin-bottom:1.5rem">
+    <h3 style="font-family:'Playfair Display',serif;font-size:1.2rem">De 1817 al presente</h3>
+    <p style="margin-top:0.4rem">Conoce los hitos que han marcado la comprensión y el tratamiento del Parkinson a lo largo de los siglos.</p>
+  </div>
+
+  <div class="timeline" id="timeline-list"></div>
+</div>
+
+<script>
+// ── NAVIGATION ──
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const idx = ['inicio','sintomas','mitos','quiz','historia'].indexOf(id);
+  document.querySelectorAll('.tab')[idx].classList.add('active');
+  revealCards();
+}
+
+// ── REVEAL ON SCROLL ──
+function revealCards() {
+  setTimeout(() => {
+    document.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
+  }, 80);
+}
+window.addEventListener('scroll', revealCards);
+revealCards();
+
+// ── SÍNTOMAS DATA ──
+const symData = {
+  temblor: { title:'Temblor en reposo', color:'#c0392b', text:'Es el síntoma más conocido, pero no el único ni el más frecuente en todos los casos. El temblor aparece cuando el músculo está relajado y suele mejorar con el movimiento voluntario. Afecta principalmente manos, pies, mandíbula o cabeza.' },
+  rigidez: { title:'Rigidez muscular', color:'#c9954a', text:'Los músculos se mantienen en tensión constante, lo que provoca dolor, dificultad para moverse y sensación de "engarrotamiento". En las articulaciones puede detectarse como el llamado "fenómeno de rueda dentada".' },
+  brady: { title:'Bradicinesia (lentitud)', color:'#3a5bbf', text:'La bradicinesia es la lentitud en el inicio y ejecución de movimientos. Actividades cotidianas como abotonarse la ropa, caminar o escribir se vuelven lentas y fatigosas. Es uno de los síntomas más incapacitantes.' },
+  equilibrio: { title:'Inestabilidad postural', color:'#2d5a3d', text:'Aparece la dificultad para mantener el equilibrio y la postura erguida. Puede provocar caídas frecuentes, cambios en la forma de caminar (pasos cortos, arrastrar los pies) y "congelación de la marcha".' },
+  cognitivo: { title:'Síntomas cognitivos', color:'#6a3d9a', text:'Problemas de memoria, atención, velocidad de procesamiento y, en fases avanzadas, deterioro cognitivo o demencia. La rehabilitación cognitiva temprana es clave para retrasar estos síntomas.' },
+  animo: { title:'Estado de ánimo', color:'#b03060', text:'La depresión afecta al 20-40% de los pacientes y puede aparecer antes del diagnóstico. La ansiedad y la apatía también son frecuentes, y no son consecuencia del diagnóstico sino síntomas directos de la enfermedad.' },
+  sueno: { title:'Trastornos del sueño', color:'#2980b9', text:'Insomnio, somnolencia diurna, sueño REM alterado (actuar físicamente los sueños) y síndrome de piernas inquietas son habituales. A menudo aparecen años antes de los síntomas motores.' },
+  expresion: { title:'Expresión facial reducida', color:'#a06020', text:'La reducción de movimientos faciales (hipomimia) puede hacer que el paciente parezca inexpresivo o apático, generando malentendidos sociales. También puede haber sialorrea (babeo) y voz débil.' }
+};
+
+function showSym(key) {
+  const d = symData[key];
+  const box = document.getElementById('sym-detail');
+  if(box.dataset.key === key && box.classList.contains('show')) {
+    box.classList.remove('show'); box.dataset.key='';
+    return;
+  }
+  box.innerHTML = `<h4 style="color:${d.color}">${d.title}</h4><p>${d.text}</p>`;
+  box.classList.add('show'); box.dataset.key = key;
+  box.scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+
+// ── MITOS DATA ──
+const mitosData = [
+  { mito: true, text: 'El Parkinson solo causa temblor.', reveal: '✅ FALSO. El temblor es el síntoma más visible, pero hasta un 25% de los pacientes no tiembla. La rigidez, la lentitud, los problemas cognitivos y emocionales son igual de importantes.' },
+  { mito: true, text: 'Solo afecta a personas mayores.', reveal: '✅ FALSO. Aunque es más frecuente en mayores de 60 años, existe el Parkinson de inicio joven, que puede diagnosticarse antes de los 50 o incluso antes de los 40.' },
+  { mito: true, text: 'Es una enfermedad solo del movimiento.', reveal: '✅ FALSO. Los síntomas no motores —depresión, ansiedad, deterioro cognitivo, trastornos del sueño— son parte central de la enfermedad y pueden aparecer años antes del temblor.' },
+  { mito: false, text: 'La dopamina juega un papel central en el Parkinson.', reveal: '✅ VERDAD. La pérdida de neuronas productoras de dopamina en la sustancia negra del cerebro es la causa principal de los síntomas motores del Parkinson.' },
+  { mito: true, text: 'Con medicación, el Parkinson se cura.', reveal: '✅ FALSO. Actualmente no existe cura. Los medicamentos, como la levodopa, tratan los síntomas pero no detienen la progresión de la enfermedad. La investigación avanza hacia nuevos tratamientos.' },
+  { mito: false, text: 'El ejercicio físico y cognitivo ayuda a los pacientes.', reveal: '✅ VERDAD. La rehabilitación física y la estimulación cognitiva son herramientas clave para mejorar la calidad de vida, retrasar el deterioro y mantener la autonomía.' },
+  { mito: true, text: 'Es una enfermedad poco común.', reveal: '✅ FALSO. Es la segunda enfermedad neurodegenerativa más frecuente del mundo, después del Alzheimer. Afecta a más de 6,5 millones de personas globalmente.' },
+];
+
+const mitosList = document.getElementById('mitos-list');
+mitosData.forEach((m, i) => {
+  const div = document.createElement('div');
+  div.className = 'mito-card';
+  div.innerHTML = `
+    <div class="mito-header" onclick="toggleMito(${i})">
+      <span class="mito-label ${m.mito?'mito':'fact'}">${m.mito?'Mito':'Verdad'}</span>
+      <span>${m.text}</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="mito-reveal" id="mito-r-${i}">${m.reveal}</div>
+  `;
+  mitosList.appendChild(div);
+});
+
+function toggleMito(i) {
+  const card = mitosList.children[i];
+  const reveal = document.getElementById(`mito-r-${i}`);
+  const isOpen = card.classList.contains('open');
+  document.querySelectorAll('.mito-card').forEach(c => c.classList.remove('open'));
+  document.querySelectorAll('.mito-reveal').forEach(r => r.classList.remove('open'));
+  if(!isOpen) { card.classList.add('open'); reveal.classList.add('open'); }
+}
+
+// ── QUIZ ──
+const quizData = [
+  { q: '¿En qué año describió James Parkinson la enfermedad por primera vez?', opts: ['1799','1817','1842','1901'], ans: 1, exp: 'James Parkinson publicó su ensayo "An Essay on the Shaking Palsy" en 1817, describiendo lo que llamó "parálisis agitante". Por eso el Día Mundial del Parkinson se celebra el 11 de abril, su fecha de nacimiento.' },
+  { q: '¿Qué neurotransmisor es principalmente deficiente en el Parkinson?', opts: ['Serotonina','Acetilcolina','Dopamina','Adrenalina'], ans: 2, exp: 'La dopamina es el neurotransmisor cuya producción disminuye en el Parkinson, debido a la pérdida de neuronas en la sustancia negra del cerebro. Esto altera el control del movimiento.' },
+  { q: '¿Cuántas personas aproximadamente viven con Parkinson en el mundo hoy?', opts: ['1 millón','3 millones','6,5 millones','20 millones'], ans: 2, exp: 'Actualmente más de 6,5 millones de personas en el mundo padecen Parkinson. Se proyecta que esta cifra superará los 25 millones en 2050, un aumento del 112%.' },
+  { q: '¿Qué porcentaje de pacientes con Parkinson NO presenta temblor?', opts: ['Menos del 5%','Alrededor del 10%','Hasta el 25%','Más del 50%'], ans: 2, exp: 'Hasta un 25% de los pacientes nunca presenta temblor. Esto hace que el diagnóstico sea más complejo y que la enfermedad sea frecuentemente malentendida por el público general.' },
+  { q: '¿Cuál es el símbolo internacional de concienciación sobre el Parkinson?', opts: ['Rosa amarilla','Tulipán rojo','Lazo azul','Girasol morado'], ans: 1, exp: 'El tulipán rojo es el símbolo internacional del Parkinson. Representa esperanza, fuerza y solidaridad entre pacientes, familias y cuidadores.' },
+  { q: '¿Qué significa el lema del Día Mundial del Parkinson 2026?', opts: ['Encontrar la cura definitiva','Cerrar la brecha en la atención y el cuidado','Aumentar la medicación disponible','Digitalizar el diagnóstico'], ans: 1, exp: '"Generar puentes en la brecha de cuidados" apunta a reducir la distancia entre las necesidades reales de los pacientes y el apoyo que reciben, incluyendo seguimiento, apoyo emocional, rehabilitación y calidad de vida.' },
+  { q: '¿Cuándo pueden aparecer los síntomas no motores del Parkinson?', opts: ['Solo después del diagnóstico motor','Nunca antes del temblor','Años antes de los síntomas motores visibles','Solo en fases terminales'], ans: 2, exp: 'Los síntomas no motores como la depresión, ansiedad, trastornos del sueño y problemas cognitivos pueden aparecer años antes de que se manifiesten los síntomas físicos como el temblor.' },
+];
+
+let qIdx = 0, score = 0;
+
+function renderQuiz() {
+  const c = document.getElementById('quiz-container');
+  if(qIdx >= quizData.length) {
+    const pct = Math.round((score/quizData.length)*100);
+    const msg = pct>=80?'¡Excelente! Eres un experto en concienciación sobre el Parkinson 🌷':
+                pct>=50?'¡Bien hecho! Sigue aprendiendo sobre esta enfermedad.':
+                '¡Gracias por intentarlo! El conocimiento es la primera forma de ayudar.';
+    c.innerHTML = `<div class="score-box">
+      <div class="big">${score}/${quizData.length}</div>
+      <p>${pct}% correcto</p>
+      <p style="margin-top:0.8rem;font-size:1rem;opacity:1">${msg}</p>
+      <button class="btn" style="margin-top:1.5rem" onclick="resetQuiz()">Volver a intentar</button>
+    </div>`;
+    return;
+  }
+  const q = quizData[qIdx];
+  const prog = ((qIdx/quizData.length)*100);
+  c.innerHTML = `
+    <div class="progress-bar-wrap"><div class="progress-bar" style="width:${prog}%"></div></div>
+    <p style="font-size:0.8rem;color:var(--gray);margin-bottom:0.5rem">Pregunta ${qIdx+1} de ${quizData.length}</p>
+    <p class="quiz-q">${q.q}</p>
+    <div class="quiz-opts">
+      ${q.opts.map((o,i)=>`<button class="quiz-opt" onclick="answerQ(${i})">${o}</button>`).join('')}
+    </div>
+    <div class="quiz-feedback" id="qfb"></div>
+    <div id="qnext"></div>
+  `;
+}
+
+function answerQ(i) {
+  const q = quizData[qIdx];
+  const opts = document.querySelectorAll('.quiz-opt');
+  opts.forEach(o => o.disabled = true);
+  opts[q.ans].classList.add('correct');
+  const fb = document.getElementById('qfb');
+  if(i === q.ans) {
+    score++;
+    fb.className = 'quiz-feedback show ok';
+    fb.innerHTML = `✅ <strong>¡Correcto!</strong> ${q.exp}`;
+  } else {
+    opts[i].classList.add('wrong');
+    fb.className = 'quiz-feedback show no';
+    fb.innerHTML = `❌ <strong>No exactamente.</strong> ${q.exp}`;
+  }
+  document.getElementById('qnext').innerHTML = `<button class="btn" onclick="nextQ()">${qIdx+1<quizData.length?'Siguiente pregunta →':'Ver resultados 🏆'}</button>`;
+}
+
+function nextQ() { qIdx++; renderQuiz(); }
+function resetQuiz() { qIdx=0; score=0; renderQuiz(); }
+renderQuiz();
+
+// ── HISTORIA / TIMELINE ──
+const timeline = [
+  { year:'1817', text:'<strong>James Parkinson</strong> publica "An Essay on the Shaking Palsy", describiendo por primera vez la enfermedad que llevaría su nombre.' },
+  { year:'1861', text:'<strong>Jean-Martin Charcot</strong> amplía la descripción clínica y le da el nombre oficial de "Enfermedad de Parkinson".' },
+  { year:'1960', text:'Investigadores descubren la <strong>deficiencia de dopamina</strong> en el cerebro como causa principal de los síntomas motores.' },
+  { year:'1967', text:'Se aprueba la <strong>levodopa</strong> como tratamiento. Sigue siendo la terapia farmacológica más eficaz hasta hoy.' },
+  { year:'1997', text:'La OMS proclama el <strong>11 de abril como Día Mundial del Parkinson</strong>, en honor al cumpleaños de James Parkinson.' },
+  { year:'2002', text:'La <strong>estimulación cerebral profunda (DBS)</strong> es aprobada para el tratamiento de síntomas motores avanzados.' },
+  { year:'2016', text:'Se reconoce oficialmente que el Parkinson incluye <strong>síntomas no motores</strong> que pueden preceder al diagnóstico motor por años.' },
+  { year:'2026', text:'La investigación avanza en <strong>biomarcadores tempranos</strong> (alfa-sinucleína, análisis de ARN) para detectar la enfermedad antes de los síntomas. El lema global: <em>"Generar puentes en la brecha de cuidados"</em>.' },
+];
+
+const tlList = document.getElementById('timeline-list');
+timeline.forEach((item, i) => {
+  const div = document.createElement('div');
+  div.className = 'tl-item';
+  div.style.animationDelay = (i*0.08)+'s';
+  div.innerHTML = `<div class="tl-dot"></div><div class="tl-year">${item.year}</div><div class="tl-text">${item.text}</div>`;
+  tlList.appendChild(div);
+});
+</script>
+</body>
+</html>
